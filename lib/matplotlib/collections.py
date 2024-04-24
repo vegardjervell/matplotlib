@@ -614,6 +614,8 @@ class Collection(artist.Artist, cm.ScalarMappable):
             ':', '', (offset, on-off-seq)}. See `.Line2D.set_linestyle` for a
             complete description.
         """
+        if ls == '':
+            ls = 'None'
         try:
             dashes = [mlines._get_dash_pattern(ls)]
         except ValueError:
@@ -705,6 +707,7 @@ class Collection(artist.Artist, cm.ScalarMappable):
             gcd = math.gcd(l_dashes, l_lw)
             dashes = list(dashes) * (l_lw // gcd)
             linewidths = list(linewidths) * (l_dashes // gcd)
+        linewidths = [lw if (dash[1] is not None) else 0 for lw, dash in zip(linewidths, dashes)]
 
         # scale the dash patterns
         dashes = [mlines._scale_dashes(o, d, lw)
